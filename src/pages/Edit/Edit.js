@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Select from "react-select";
 import Spiner from "../../components/Spiner/Spiner";
+import { singleUsergetfunc,editfunc } from "../../services/Apis";
+import { useNavigate, useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./edit.css";
+import { updateData } from "../../components/context/ContextProvider";
 
 const Edit = () => {
   const [inputdata, setInputData] = useState({
@@ -15,16 +18,23 @@ const Edit = () => {
     product: "",
     dateofsale: "",
     rgioncode: "",
+    storecode:"",
     noofpieces: "",
     amount: "",
     tax: "",
     totalamount: "",
   });
-  console.log(inputdata);
+  
 
   const [status, setStatus] = useState("Active");
 
   const [showspin, setShowSpin] = useState(true);
+   
+
+  const { update, setUpdate } = useContext(updateData)
+   const navigate = useNavigate();
+   
+    const { id } = useParams();
 
   //status
   const options = [
@@ -45,8 +55,23 @@ const Edit = () => {
     setStatus(e.value);
   };
 
+
+  
+
+  const userProfileGet = async () => {
+    const response = await singleUsergetfunc(id);
+
+    if (response.status === 200) {
+       
+      setInputData(response.data);
+      setStatus(response.data.status)
+    } else {
+      console.log("error");
+    }
+  };
+
   //submit userdata
-  const submitUserData = (e) => {
+  const submitUserData = async(e) => {
     e.preventDefault();
 
     const {
@@ -54,6 +79,7 @@ const Edit = () => {
       product,
       dateofsale,
       rgioncode,
+      storecode,
       noofpieces,
       amount,
       tax,
@@ -68,6 +94,8 @@ const Edit = () => {
       toast.error("date Of sale is required");
     } else if (rgioncode === "") {
       toast.error("region code is required");
+    }else if (storecode === "") {
+      toast.error("store code is required");
     } else if (noofpieces === "") {
       toast.error("Num of pieces required");
     } else if (amount === "") {
@@ -79,10 +107,30 @@ const Edit = () => {
     } else if (status === "") {
       toast.error("status is required");
     } else {
-      toast.success("Registration successfully done");
+      const data = new FormData();
+      data.append("category", category);
+      data.append("product", product);
+      data.append("dateofsale", dateofsale);
+      data.append("rgioncode", rgioncode);
+      data.append("storecode", storecode);
+      data.append("noofpieces", noofpieces);
+      data.append("amount", amount);
+      data.append("tax", tax);
+      data.append("totalamount", totalamount);
+      data.append("status", status);
+
+      const config = {
+        "Content-Type": "application/json",
+      };
+         const response = await editfunc(id,data,config)
+         if(response.status === 200){
+          setUpdate(response.data)
+          navigate("/")
+         }
     }
   };
   useEffect(() => {
+    userProfileGet()
     setTimeout(() => {
       setShowSpin(false);
     }, 1200);
@@ -112,6 +160,7 @@ const Edit = () => {
                     label={`Cricket`}
                     name="Category"
                     value={"Cricket"}
+                    checked={inputdata.category == "Cricket" ? true : false}
                     onChange={setInputValue}
                   />
                   <Form.Check
@@ -119,12 +168,14 @@ const Edit = () => {
                     label={`FootBall`}
                     name="category"
                     value={"FootBall"}
+                    checked={inputdata.category == "FootBall" ? true : false}
                     onChange={setInputValue}
                   />
                   <Form.Check
                     type={"radio"}
                     label={`Tennis`}
                     name="category"
+                    checked={inputdata.category == "Tennis" ? true : false}
                     value={"Tennis"}
                   />
                 </Form.Group>
@@ -165,6 +216,18 @@ const Edit = () => {
                     onChange={setInputValue}
                   />
                 </Form.Group>
+                <Form.Group
+                  className="mb-3 col-lg-6"
+                  controlId="formBasicEmail"
+                >
+                  <Form.Label>storeCode</Form.Label>
+                  <Form.Control
+                    type="email"
+                    name="storecode"
+                    value={inputdata.storecode}
+                    onChange={setInputValue}
+                  />
+                </Form.Group>
 
                 <Form.Group
                   className="mb-3 col-lg-6"
@@ -187,6 +250,7 @@ const Edit = () => {
                   <Form.Control
                     type="email"
                     name="amount"
+                    value={inputdata.amount}
                     onChange={setInputValue}
                   />
                 </Form.Group>
@@ -224,7 +288,7 @@ const Edit = () => {
                   <Form.Label>Active Sports Category</Form.Label>
                   <Select
                     options={options}
-                    value={status}
+                    defaultValue={status}
                     onChange={setStatusvalue}
                   />
                 </Form.Group>

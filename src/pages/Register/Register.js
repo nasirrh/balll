@@ -19,13 +19,14 @@ const Register = () => {
     product: "",
     dateofsale: "",
     rgioncode: "",
+    storecode:"",
     noofpieces:"",
     amount:"",
     tax:"",
     totalamount:"",
 
   });
-  console.log(inputdata);
+  // console.log(inputdata);
 
   const[status,setStatus] = useState("Active");
   const [showspin, setShowSpin] = useState(true);
@@ -63,10 +64,11 @@ const Register = () => {
     product,
     dateofsale,
     rgioncode,
+    storecode,
     noofpieces,
     amount,
     tax,
-    totalamount, } = inputdata;
+    totalamount,  } = inputdata;
 
       if (category === ""){
         toast.error("Category is required")
@@ -77,6 +79,8 @@ const Register = () => {
         toast.error("date Of sale is required")
       }else if(rgioncode ===""){
         toast.error("region code is required")
+      }else if(storecode ===""){
+        toast.error("store code is required")
       }else if(noofpieces===""){
         toast.error("Num of pieces required")
       }else if(amount===""){
@@ -95,15 +99,16 @@ const Register = () => {
          data.append("product", product);
          data.append("dateofsale", dateofsale);
          data.append("rgioncode", rgioncode);
+         data.append("storecode", storecode);
          data.append("noofpieces", noofpieces);
          data.append("amount", amount);
          data.append("tax", tax);
          data.append("totalamount", totalamount);
+         data.append("status", status)
 
          const config = {
-
-          "Content-Type":"application/json"
-         }
+           "Content-Type": "application/json",
+         };
          
 
          const response = await registerfunc(data,config)
@@ -116,10 +121,12 @@ const Register = () => {
             product: "",
             dateofsale: "",
             rgioncode: "",
+            storecode:"",
             noofpieces: "",
             amount: "",
             tax: "",
-            totalamount: ""
+            totalamount: "",
+            
           });
           setStatus("")
           setUseradd(response.data)
@@ -159,13 +166,7 @@ const Register = () => {
                   controlId="formBasicEmail"
                 >
                   <Form.Label>Select Your Sports Category</Form.Label>
-                  <Form.Check
-                    type={"radio"}
-                    label={`Cricket`}
-                    name="Category"
-                    value={"Cricket"}
-                    onChange={setInputValue}
-                  />
+
                   <Form.Check
                     type={"radio"}
                     label={`FootBall`}
@@ -180,6 +181,13 @@ const Register = () => {
                     value={"Tennis"}
                     onChange={setInputValue}
                   />
+                  <Form.Check
+                    type={"radio"}
+                    label={`Cricket`}
+                    name="category"
+                    value={"Cricket"}
+                    onChange={setInputValue}
+                  />
                 </Form.Group>
 
                 <Form.Group
@@ -190,6 +198,7 @@ const Register = () => {
                   <Form.Control
                     type="text"
                     name="product"
+                    placeholder="Product Name"
                     value={inputdata.product}
                     onChange={setInputValue}
                   />
@@ -214,7 +223,22 @@ const Register = () => {
                   <Form.Control
                     type="email"
                     name="rgioncode"
+                    placeholder="Rgion Code"
                     value={inputdata.rgioncode}
+                    onChange={setInputValue}
+                  />
+                </Form.Group>
+
+                <Form.Group
+                  className="mb-3 col-lg-6"
+                  controlId="formBasicEmail"
+                >
+                  <Form.Label>StoreCode</Form.Label>
+                  <Form.Control
+                    type="email"
+                    name="storecode"
+                    placeholder="Store Code"
+                    value={inputdata.storecode}
                     onChange={setInputValue}
                   />
                 </Form.Group>
@@ -227,6 +251,7 @@ const Register = () => {
                   <Form.Control
                     type="email"
                     name="noofpieces"
+                    placeholder="5"
                     value={inputdata.noofpieces}
                     onChange={setInputValue}
                   />
