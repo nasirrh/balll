@@ -34,11 +34,7 @@ export const exporttocsvfunc = async()=>{
     return await commonrequest ("GET", `${BASE_URL}/userexport`,"")
 }
 
-export const aggfunc = async()=>{
-    return await commonrequest  ("POST", `${BASE_URL}/user/agg`,"")
+export const aggfunc = async(data, header )=>{
+    return await commonrequest  ("GET", `${BASE_URL}/user/agg`,"")
 }
-// export const daterangefunc = async () => {
-//   return await commonrequest("GET", `${BASE_URL}/user/date_range`, "");
-// };
-
 

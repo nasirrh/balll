@@ -1,5 +1,6 @@
 import React,{useState,useEffect} from 'react'
 import Dropdown from "react-bootstrap/Dropdown";
+import Form from "react-bootstrap/Form";
 import Row from 'react-bootstrap/esm/Row';
 import Card from 'react-bootstrap/Card'
 import Table from 'react-bootstrap/esm/Table';
@@ -36,25 +37,46 @@ const Agg = () => {
         <div className="container">
           <h2 className="text-center mt-1">Aggregate Your Tables</h2>
           <div className="agg">
-            <h3>Aggregate Your Category</h3>
-            <Dropdown className>
-              <Dropdown.Toggle variant="success" id="dropdown-basic">
-                Category
-              </Dropdown.Toggle>
+            <h3>Filter By status</h3>
+            {/* <div className="status_radio d-flex justify-content-around flex-wrap"> */}
+            <Form.Check
+              type={"radio"}
+              label={`North`}
+              name="status"
+              value={"North"}
+              // onChange={(e) => setStatus(e.target.value)}
+              // defaultChecked
+            />
 
-              <Dropdown.Menu>
-                <Dropdown.Item>Cricket</Dropdown.Item>
-                <Dropdown.Item>FootBall</Dropdown.Item>
-                <Dropdown.Item>Tennis</Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
+            <Form.Check
+              type={"radio"}
+              label={`South`}
+              name="status"
+              value={"South"}
+              // onChange={(e) => setStatus(e.target.value)}
+            />
+
+            <Form.Check
+              type={"radio"}
+              label={`East`}
+              name="status"
+              value={"East"}
+            />
+
+            <Form.Check
+              type={"radio"}
+              label={`West`}
+              name="status"
+              value={"West"}
+            />
+            {/* // onChange={(e) => setStatus(e.target.value)} */}
             <Row>
               <div className="col mt-4">
                 <Card className="shadow">
                   <Table
                     className="align-align-items-center"
                     responsive="sm"
-                    user = {user}
+                    user={user}
                   >
                     <thead className="thead-dark">
                       <tr className="table-dark">
@@ -69,25 +91,26 @@ const Agg = () => {
                       </tr>
                     </thead>
                     <tbody>
-                    {
-                      user.length > 0 ? user.map((element,index)=>{
-                        return (
-                          <>
-                            <tr>
-                              <td>{index}</td>
-                              <td>{element.category}</td>
-                              <td>{element.product}</td>
-                              <td>{element.dateofsale}</td>
-                              <td>{element.rgioncode}</td>
+                      {user.length > 0 ? (
+                        user.map((element, index) => {
+                          return (
+                            <>
+                              <tr>
+                                <td>{index}</td>
+                                <td>{element.category}</td>
+                                <td>{element.product}</td>
+                                <td>{element.dateofsale}</td>
+                                <td>{element.rgioncode}</td>
 
-                              <td>{element.noofpieces}</td>
-                              <td>{element.amount}</td>
-                            </tr>
-                          </>
-                        );
-                      }):<div> No Data available</div>
-                    }
-                      
+                                <td>{element.noofpieces}</td>
+                                <td>{element.amount}</td>
+                              </tr>
+                            </>
+                          );
+                        })
+                      ) : (
+                        <div> No Data available</div>
+                      )}
                     </tbody>
                   </Table>
                 </Card>

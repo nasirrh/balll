@@ -314,7 +314,7 @@ const Register = () => {
             </Form>
           </Card>
 
-          <ToastContainer position="top-center" />
+          <ToastContainer position="top-center"/>
         </div>
       )}
     </>

@@ -157,7 +157,7 @@ const Home = () => {
               <Form className="d-flex">
                 <Form.Control
                   type="search"
-                  placeholder="Search"
+                  placeholder="Search by rgion code"
                   className="me-2"
                   aria-label="Search"
                   onChange={(e) => setSearch(e.target.value)}
@@ -167,17 +167,17 @@ const Home = () => {
                 </Button>
               </Form>
             </div>
-            <NavLink to={`/agg`}>
+            {/* <NavLink to={`/agg`}>
               <div className="add_btn">
                 <Button variant="outline-info">
                   <i class="fa-solid fa-bolt"></i>&nbsp; Aggregate
                 </Button>
               </div>
-            </NavLink>
+            </NavLink> */}
 
             <div className="add_btn">
-              <Button variant="outline-primary" onClick={adduser}>
-                <i class="fa-solid fa-plus"></i>&nbsp; Add User
+              <Button variant="outline-info" onClick={adduser}>
+                <i class="fa-solid fa-bolt"></i>&nbsp; Add User
               </Button>
             </div>
           </div>
